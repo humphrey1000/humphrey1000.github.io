@@ -1,86 +1,88 @@
 <!doctype html>
 <html>
     <head>
-        <title>My Finances</title>
+        <title>Humphrey's Finances</title>
         <style>
             body {
                 font-family: Arial, sans-serif;
-                background-color: lightgray;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                height: 100vh;
+                background-color: #ddd;
             }
-            h1 {
-                color: blue;
+            h1, h2 {
+                color: #333;
                 text-align: center;
-                font-size: 36px;
-                margin-top: 50px;
             }
-            h2 {
-                color: green;
-                text-align: center;
-                font-size: 24px;
-                margin-top: 20px;
+            ul {
+                width: 50%;
+                list-style-type: none;
+                padding: 0;
+                margin: 0;
             }
-            h3 {
-                color: black;
-                text-align: center;
-                font-size: 18px;
-                margin-top: 20px;
+            li {
+                background-color: #fff;
+                margin-bottom: 10px;
+                padding: 20px;
+                box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1);
+                border-radius: 10px;
             }
             button {
-                background-color: blue;
-                color: white;
-                border: none;
-                border-radius: 5px;
                 padding: 10px 20px;
+                background-color: #333;
+                color: #fff;
+                border-radius: 20px;
+                border: none;
                 margin-top: 20px;
-                margin-left: auto;
-                margin-right: auto;
-                display: block;
                 cursor: pointer;
             }
         </style>
+        <script>
+            let account = JSON.parse(localStorage.getItem('account')) || {
+                capital: 0,
+                theme: '',
+                stock: []
+            };
+
+            function addExpenditure() {
+                let use = prompt("Enter expenditure use:");
+                let amount = parseInt(prompt("Enter expenditure amount:"));
+                account.capital -= amount;
+                account.stock.push({
+                    use,
+                    amount
+                });
+                localStorage.setItem('account', JSON.stringify(account));
+                updateUI();
+            }
+
+            function updateUI() {
+                let body = document.getElementById('body');
+                body.innerHTML = `
+                    <h1>Capital: ${account.capital}</h1>
+                    <h2>Theme: ${account.theme}</h2>
+                `;
+
+                let list = document.createElement('ul');
+                for (let entry of account.stock) {
+                    let item = document.createElement('li');
+                    item.innerHTML = `Use: ${entry.use} Amount: ${entry.amount}`;
+                    list.appendChild(item);
+                }
+                body.appendChild(list);
+                body.appendChild(document.createElement('br'));
+
+                let button = document.createElement('button');
+                button.innerHTML = "Add Expenditure";
+                button.onclick = addExpenditure;
+                body.appendChild(button);
+            }
+
+            updateUI();
+        </script>
     </head>
     <body id="body">
-        <h1></h1><br /><br />
-        <h2></h2><br /><br />
-        <button onclick="show()">...</button>
     </body>
-    <script>
-        class Budget { 
-            constructor(capital, theme, stock) {
-                this.capital = capital;
-                this.theme = theme; 
-                this.stock = [];
-            }
-            expenditure(use, amount) {
-                this.stock.push({use, amount});
-            }
-        }
-
-        const capital = parseInt(prompt("Enter the capital:"));
-        const theme = prompt("Enter the theme:");
-        const account = new Budget(capital, theme);
-        
-        document.querySelector("h1").innerHTML = `Capital: $${account.capital}`;
-        document.querySelector("h2").innerHTML = `Theme: ${account.theme}`;
-
-        function show() {
-            const use = prompt("Enter the use:");
-            const amount = parseInt(prompt("Enter the amount:"));
-            account.expenditure(use, amount);
-            const body = document.getElementById("body");
-            const list = document.createElement("ul");
-            list.style.listStyle = "none";
-            list.style.marginLeft = "auto";
-            list.style.marginRight = "auto";
-            list.style.width = "50%";
-            account.stock.forEach(item => {
-                const listItem = document.createElement("li");
-                listItem.style.marginTop = "10px";
-                listItem.style.fontSize = "18px";
-                listItem.innerHTML = `Use: ${item.use}, Amount: $${item.amount}`;
-                list.appendChild(listItem);
-            });
-            body.appendChild(list);
-        }
-    </script>
 </html>
