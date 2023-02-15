@@ -1,102 +1,39 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
-    <head>
-        <title>My Finances</title>
-                <link rel="icon" href="favicon.png" type="image/x-icon"/>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Hello World</title>
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
 
-        <style>
-            #body {
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                justify-content: center;
-                height: 100vh;
-            }
+    <!-- Don't use this in production: -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="text/babel">
+    
+      function MyApp() {
+        return <h1>Hello, world!</h1>;
+      }
 
-            h1, h2 {
-                font-size: 2rem;
-                margin-bottom: 1rem;
-            }
+      const container = document.getElementById('root');
+      const root = ReactDOM.createRoot(container);
+      root.render(<MyApp />);
 
-            #entries {
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                margin-top: 2rem;
-            }
+    </script>
+    <!--
+      Note: this page is a great way to try React but it's not suitable for production.
+      It slowly compiles JSX with Babel in the browser and uses a large development build of React.
 
-            .entry {
-                display: flex;
-                justify-content: space-between;
-                width: 50%;
-                padding: 1rem;
-                margin-bottom: 1rem;
-                border-radius: 10px;
-                background-color: lightgray;
-            }
+      Read this section for a production-ready setup with JSX:
+      https://reactjs.org/docs/add-react-to-a-website.html#add-jsx-to-a-project
 
-            .use {
-                font-weight: bold;
-            }
+      In a larger project, you can use an integrated toolchain that includes JSX instead:
+      https://reactjs.org/docs/create-a-new-react-app.html
 
-            .amount {
-                color: green;
-            }
-        </style>
-    </head>
-    <body id="body">
-        <h1>Capital: <span id="capital"></span></h1>
-        <h2>Theme: <span id="theme"></span></h2>
-        <div id="entries"></div>
-        <button onclick="showPrompt()">Add Entry</button>
-        <script>
-            class Budget {
-                constructor(capital, theme) {
-                    this.capital = capital;
-                    this.theme = theme;
-                    this.stock = [];
-                }
-
-                expenditure(use, amount) {
-                    this.stock.push({use, amount});
-                }
-            }
-
-            const capital = prompt("Enter your budget's capital:");
-            const theme = prompt("Enter your budget's theme:");
-            const account = new Budget(capital, theme);
-
-            document.getElementById("capital").innerHTML = account.capital;
-            document.getElementById("theme").innerHTML = account.theme;
-
-            function showPrompt() {
-                const use = prompt("Enter the use of the expenditure:");
-                const amount = prompt("Enter the amount of the expenditure:");
-                account.expenditure(use, amount);
-                renderEntries();
-            }
-
-            function renderEntries() {
-                const entriesContainer = document.getElementById("entries");
-                entriesContainer.innerHTML = "";
-
-                for (const entry of account.stock) {
-                    const entryElement = document.createElement("div");
-                    entryElement.classList.add("entry");
-
-                    const useElement = document.createElement("div");
-                    useElement.classList.add("use");
-                    useElement.innerHTML = entry.use;
-
-                    const amountElement = document.createElement("div");
-                    amountElement.classList.add("amount");
-                    amountElement.innerHTML = entry.amount;
-
-                    entryElement.appendChild(useElement);
-                    entryElement.appendChild(amountElement);
-                    entriesContainer.appendChild(entryElement);
-                }
-            }
-        </script>
-    </body>
+      You can also use React without JSX, in which case you can remove Babel:
+      https://reactjs.org/docs/react-without-jsx.html
+    -->
+  </body>
 </html>
