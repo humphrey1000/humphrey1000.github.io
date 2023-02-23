@@ -1,6 +1,6 @@
-int map(x){
-  if (x == 0) {
-  printf("No contributions")
-  }
-  return map(x + 1)
+int fib(int n){
+  if (n <= 1)
+    return n;
+  else
+    return fib(n-1) + fib(n-2);
 }
